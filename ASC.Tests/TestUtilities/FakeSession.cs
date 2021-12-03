@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
+using ServiceStack;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,17 +12,32 @@ namespace ASC.Tests.TestUtilities
     public class FakeSession : ISession
     {
         public bool IsAvailable => throw new NotImplementedException();
+
         public string Id => throw new NotImplementedException();
+
         public IEnumerable<string> Keys => throw new NotImplementedException();
+    
         private Dictionary<string, byte[]> sessionFactory = new Dictionary<string, byte[]>();
         public void Clear()
         {
             throw new NotImplementedException();
         }
+
+        public Task CommitAsync(CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task LoadAsync(CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Remove(string key)
         {
             throw new NotImplementedException();
         }
+
         public void Set(string key, byte[] value)
         {
             if (!sessionFactory.ContainsKey(key))
@@ -28,9 +45,10 @@ namespace ASC.Tests.TestUtilities
             else
                 sessionFactory[key] = value;
         }
+
         public bool TryGetValue(string key, out byte[] value)
         {
-            if (sessionFactory.ContainsKey(key) && sessionFactory[key] != null)
+            if(sessionFactory.ContainsKey(key) && sessionFactory[key] != null)
             {
                 value = sessionFactory[key];
                 return true;
@@ -40,15 +58,6 @@ namespace ASC.Tests.TestUtilities
                 value = null;
                 return false;
             }
-        }
-        public Task CommitAsync(CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task LoadAsync(CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
         }
     }
 }
